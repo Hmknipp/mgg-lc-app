@@ -1,5 +1,6 @@
-library(leaflet)
-
+library(shiny)
+library(plotly)
+library(DT)
 navbarPage("GG MGG Explorer", id="nav",       
     tabPanel("Interactive map",
         div(class="outer",
