@@ -6,6 +6,7 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 library(maps)
+library(DT)
 function(input, output, session) {
   
  # Reactive expression for filtered data
@@ -31,6 +32,17 @@ function(input, output, session) {
     
   })
 
+  filteredTable <- reactive({
+    req(full.data)
+    
+    tbldata <- full.data
+    
+    tbldata <- tbldata %>% filter(input$cityvalue == geocode.value)
+
+    tbldata <- tbldata  %>% select(-city, -state, -country, -notes, -lon, -lat, -geoAddress)
+    
+    tbldata
+  })
   ## Interactive Map ###########################################
   
   # Create the map
@@ -56,6 +68,10 @@ observe({
 output$map <- renderPlotly({
   ggplotly(p, tooltip = "text")
 })
-})  
+output$dtable <- renderDT({
+  filteredTable()
+})
+})
+ 
     
   }
