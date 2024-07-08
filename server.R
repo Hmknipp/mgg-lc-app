@@ -44,7 +44,7 @@ function(input, output, session) {
     tbldata
   })
   ## Interactive Map ###########################################
-  
+
   # Create the map
   output$map <- renderPlotly({
   usa <- map_data("state")
@@ -62,7 +62,8 @@ observe({
   scale_color_manual(values = c("Gaia's Guide" = "#0F8554", "Bob Damron's Address Book" = "#6F4070")) + # Manually set colors
   theme(axis.text.x = element_blank(), axis.text.y = element_blank(), # Remove axis labels
         axis.ticks = element_blank(), # Remove axis ticks
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank()) # Remove gridlines
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + #Remove gridlines
+  labs(title = paste("Gaia's Guide & Damron's Guide: ", unique_years_string)) # Add the dynamically created title at the top of the map
 
 # Directly render the updated plot to output$map
 output$map <- renderPlotly({

@@ -8,3 +8,10 @@ gg.data <- mgg.gg.data %>% filter(publication == "Gaia's Guide")
 
 gg.data <- gg.data  %>% mutate(uniqueID = paste("gg.", row_number(), sep=""))
 mgg.data <- mgg.data  %>% mutate(uniqueID = paste("mgg.", row_number(), sep=""))
+
+unique_years_string <- full.data %>% 
+  select(year) %>% 
+  distinct() %>% 
+  arrange(year) %>% 
+  pull(year) %>% 
+  paste(collapse = ", ")
