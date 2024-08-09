@@ -47,12 +47,13 @@ function(input, output, session) {
 
   # Create the map
   output$map <- renderPlotly({
-  usa <- map_data("state")
+    usa <- map_data("state")
     p <- ggplot() +
       geom_polygon(data = usa, aes(x = long, y = lat, group = group), fill = "gray90", color = "white")
     p <- p %>% layout(legend = list(orientation = "h", x = 0.5, y = -0.1, xanchor = "center", yanchor = "top"))
     ggplotly(p)
   })
+  
   
 observe({
   # Assuming 'publication' and 'geocode.value' are the columns you want to include in the tooltip
