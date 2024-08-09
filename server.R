@@ -44,14 +44,39 @@ function(input, output, session) {
     tbldata
   })
   
+  #table
+  
+  
+  observe({
+    # Assuming 'publication' and 'geocode.value' are the columns you want to include in the tooltip
+    p <- ggplot() +
+      geom_polygon(data = map_data("state"), aes(x = long, y = lat, group = group), fill = "gray90", color = "white") +
+      geom_point(data = filteredData(), aes(x = lon, y = lat, size = relative.percentage, color = publication, text = paste("Publication:", publication, "<br>Count:", count, "<br>Geocode Value:", geocode.value)), alpha = 0.5) +
+      scale_color_manual(values = c("Gaia's Guide" = "#0F8554", "Bob Damron's Address Book" = "#6F4070")) + # Manually set colors
+      theme(axis.text.x = element_blank(), axis.text.y = element_blank(), # Remove axis labels
+            axis.ticks = element_blank(), # Remove axis ticks
+            panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + #Remove gridlines
+      labs(title = paste("Gaia's Guide & Damron's Guide: ", unique_years_string)) # Add the dynamically created title at the top of the map
+    
+    # Directly render the updated plot to output$map
+    output$map <- renderPlotly({
+      ggplotly(p, tooltip = "text")
+    })
+    output$dtable <- renderDT({
+      filteredTable()
+    })
+  
   #map 
   
   output$map <- renderPlotly({
-    ggplot(data = filteredData(), aes(x = lon, y = lat)) +
+    usa <- map_data("state")
+    p <- ggplot(data = filteredData(), aes(x = lon, y = lat)) +
       geom_polygon(data = map_data("state"), aes(x = long, y = lat, group = group), fill = "gray90", color = "white") +
       geom_point(aes(size = relative.percentage, color = publication, text = paste("Publication:", publication, "<br>Count:", count, "<br>Geocode Value:", geocode.value)), alpha = 0.5) +
       scale_color_manual(values = c("#0F8554", "#6F4070")) +
       theme(legend.position = "none")
   })
   
+
+  })
 }
